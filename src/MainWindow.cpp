@@ -155,8 +155,6 @@ MainWindow::MainWindow()
             this,SLOT(slotAboutDialog()));
     connect(this->ui->actionArbitraryTest,SIGNAL(triggered()),this,SLOT(slotArbitraryTest()));
 
-    isToSnap = false;
-
 }
 
 MainWindow::~MainWindow()
@@ -291,7 +289,6 @@ void MainWindow::slotStartSelectVertices()
 void MainWindow::slotEndSelectVertices()
 {
     renwin->GetInteractor()->SetInteractorStyle(defStyle);
-    if(isToSnap) toSnapVertices();
     hexBlocker->render();
 }
 
@@ -326,13 +323,15 @@ void MainWindow::slotRotateVertices()
 
 void MainWindow::slotSnapVertices()
 {
-    isToSnap = true;    // this variable is a hack, but I don't want a new toolbox / replace an existing one
+    connect(styleVertPick,SIGNAL(selectionDone()),
+               this,SLOT(toSnapVertices()));
     slotStartSelectVertices();
 }
 
 void MainWindow::toSnapVertices()
 {
-    isToSnap = false;
+    disconnect(styleVertPick,SIGNAL(selectionDone()),
+               this,SLOT(toSnapVertices()));
     hexBlocker->snapVertices(styleVertPick->SelectedList);
     slotResetInteractor();
     verticeEditor->updateVertices();

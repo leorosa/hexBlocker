@@ -143,7 +143,6 @@ private:
   Ui_MainWindow *ui;
   QString saveFileName;
 
-  bool isToSnap;
 };
 
 #endif // MainWindow_H
