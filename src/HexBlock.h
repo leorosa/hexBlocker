@@ -138,6 +138,9 @@ public:
     // returns a list of common vertices. NOT YET TESTED
     vtkIdList* commonVertices(HexBlock *hb);
 
+    // returns the ID of a vertice, inserting it if needed
+    vtkIdType insertUniqueVertice(vtkSmartPointer<vtkPoints> verts, double pos[3]);
+
     // returns true if vId is in vertIds
     bool hasVertice(vtkIdType vId);
 

@@ -135,9 +135,6 @@ void HexBlock::init(vtkSmartPointer<HexPatch> p,
     globalEdges = edges;
     globalPatches = patches;
 
-    // number of vertices before extrude
-    vtkIdType nGv=globalVertices->GetNumberOfPoints();
-
     vtkIdList * oldIds =  p->vertIds;
     vtkIdList * newIds;
     newIds = vtkSmartPointer<vtkIdList>::New();
@@ -151,31 +148,13 @@ void HexBlock::init(vtkSmartPointer<HexPatch> p,
     {
         double oldCoords[3];
         double newCoords[3];
-        double tmpCoords[3];
         vtkIdType ptId;
         globalVertices->GetPoint(p->vertIds->GetId(i),oldCoords);
         vtkMath::Add(oldCoords,n_dist,newCoords);
 // I would make sense to create 4 new vertices for the extruded block, only if
 // the extrusion of a list of patches were permited. However, it is not the
 // case, and thus it is more useful to check if new vertices are needed.
-//      globalVertices->InsertNextPoint(newCoords);
-//      newIds->SetId(i, nGv);
-//      nGv++;
-        for(ptId=0; ptId<nGv; ptId++)
-        {
-            globalVertices->GetPoint(ptId, tmpCoords);
-            if( tmpCoords[0] == newCoords[0]
-                && tmpCoords[1] == newCoords[1]
-                && tmpCoords[2] == newCoords[2] )
-            {
-                break;
-            }
-        }
-        if(ptId==nGv)
-        {
-            globalVertices->InsertNextPoint(newCoords);
-            nGv++;
-        }
+        ptId = insertUniqueVertice(globalVertices, newCoords);
         newIds->SetId(i, ptId);
     }
 
@@ -698,6 +677,22 @@ vtkIdList * HexBlock::commonVertices(HexBlock *hb)
             comVerts->InsertNextId(vertIds->GetId(i));
     }
     return comVerts;
+}
+
+vtkIdType HexBlock::insertUniqueVertice(vtkSmartPointer<vtkPoints> verts, double pos[3])
+{
+    double tmpCoords[3];
+    vtkIdType ptId;
+    vtkIdType nGv=verts->GetNumberOfPoints();
+    for(ptId=0; ptId<nGv; ptId++)
+    {
+        verts->GetPoint(ptId, tmpCoords);
+        if(tmpCoords[0]==pos[0] && tmpCoords[1]==pos[1] && tmpCoords[2]==pos[2])
+            break;
+    }
+    if(ptId==nGv)
+        verts->InsertNextPoint(pos);
+    return ptId;
 }
 
 bool HexBlock::hasVertice(vtkIdType vId)
