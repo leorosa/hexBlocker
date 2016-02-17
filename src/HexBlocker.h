@@ -78,6 +78,9 @@ public:
     //create a block from to corner points.
     void createHexBlock(double [3],double [3]);
 
+    //add block to the list; create patches, edges and rendered items
+    void addHexBlockFeatures(vtkSmartPointer<HexBlock> hex, vtkIdType numEdges, vtkIdType numPatches);
+
     //create a block by extrusion of a patch.
     //only one the first patch in the list will
     //be used

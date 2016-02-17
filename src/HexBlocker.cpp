@@ -176,34 +176,8 @@ void HexBlocker::createHexBlock(double c0[3], double c1[3])
     vtkIdType numPatches= patches->GetNumberOfItems();
     vtkSmartPointer<HexBlock> hex=
             vtkSmartPointer<HexBlock>::New();
-
-    int numBlocks= hexBlocks->GetNumberOfItems();
-
-
     hex->init(c0,c1,vertices,edges, patches);
-
-    hexBlocks->AddItem(hex);
-
-    //add edge actors renderer, but not already added ones.
-    for (vtkIdType i =numEdges;i<edges->GetNumberOfItems();i++)
-    {
-        HexEdge *e = HexEdge::SafeDownCast(edges->GetItemAsObject(i));
-        renderer->AddActor(e->actor);
-    }
-
-    //add patch actors to renderer, but not already added ones.
-    for(vtkIdType i=numPatches;i<patches->GetNumberOfItems();i++)
-    {
-        HexPatch *p = HexPatch::SafeDownCast(patches->GetItemAsObject(i));
-        renderer->AddActor(p->actor);
-    }
-
-    renderer->AddActor(hex->hexAxisActor);
-    renderer->AddActor(hex->hexBlockActor);
-    vertices->Modified();
-    resetBounds();
-
-    this->render();
+    addHexBlockFeatures(hex, numEdges, numPatches);
 }
 
 void HexBlocker::extrudePatch(vtkIdList *selectedPatches, double dist)
@@ -235,9 +209,12 @@ void HexBlocker::extrudePatch(vtkIdList *selectedPatches, double dist)
     vtkSmartPointer<HexBlock> newHex=
             vtkSmartPointer<HexBlock>::New();
     newHex->init(p,dist,vertices,edges,patches);
+    addHexBlockFeatures(newHex, numEdges, numPatches);
+}
 
-    hexBlocks->AddItem(newHex);
-    vertices->Modified();
+void HexBlocker::addHexBlockFeatures(vtkSmartPointer<HexBlock> hex, vtkIdType numEdges, vtkIdType numPatches)
+{
+    hexBlocks->AddItem(hex);
 
     //add edge actors to renderer, but not already added ones.
     for (vtkIdType i =numEdges;i<edges->GetNumberOfItems();i++)
@@ -253,12 +230,11 @@ void HexBlocker::extrudePatch(vtkIdList *selectedPatches, double dist)
         renderer->AddActor(p->actor);
     }
 
-    this->resetBounds();
-    renderer->AddActor(newHex->hexAxisActor);
-    renderer->AddActor(newHex->hexBlockActor);
+    renderer->AddActor(hex->hexAxisActor);
+    renderer->AddActor(hex->hexBlockActor);
+    vertices->Modified();
+    resetBounds();
     this->render();
-
-
 }
 
 void HexBlocker::resetBounds()
