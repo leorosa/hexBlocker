@@ -73,6 +73,9 @@ public:
     //radius of tube representation
     void setRadius(double rad);
 
+    //return the id of an end of the edge (id = 0 or 1)
+    vtkIdType getVertIds(vtkIdType id);
+
     //for debug output, outpus edgeIds
     void exportVertIds(QTextStream &os);
     //export the edge info to screen

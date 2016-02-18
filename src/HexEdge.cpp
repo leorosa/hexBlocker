@@ -160,6 +160,11 @@ void HexEdge::exportVertIds(QTextStream &os)
          << vertIds->GetId(1) << ")" << endl;
 }
 
+vtkIdType HexEdge::getVertIds(vtkIdType id)
+{
+    return (vertIds->GetId(id));
+}
+
 void HexEdge::exportEdgeDict(QTextStream &os)
 {
     if(edgeType == LINE )
