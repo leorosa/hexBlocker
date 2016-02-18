@@ -180,6 +180,15 @@ void HexBlocker::createHexBlock(double c0[3], double c1[3])
     addHexBlockFeatures(hex, numEdges, numPatches);
 }
 
+void HexBlocker::createHexBlock(vtkIdList *selectedVertices)
+{
+    vtkIdType numEdges = edges->GetNumberOfItems();
+    vtkIdType numPatches = patches->GetNumberOfItems();
+    vtkSmartPointer<HexBlock> hex = vtkSmartPointer<HexBlock>::New();
+    hex->init(selectedVertices, vertices, edges, patches);
+    addHexBlockFeatures(hex, numEdges, numPatches);
+}
+
 void HexBlocker::extrudePatch(vtkIdList *selectedPatches, double dist)
 {
     if(selectedPatches->GetNumberOfIds()<1)

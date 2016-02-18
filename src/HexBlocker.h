@@ -78,6 +78,9 @@ public:
     //create a block from to corner points.
     void createHexBlock(double [3],double [3]);
 
+    //create a block with eight ordered vertices.
+    void createHexBlock(vtkIdList *selectedVertices);
+
     //add block to the list; create patches, edges and rendered items
     void addHexBlockFeatures(vtkSmartPointer<HexBlock> hex, vtkIdType numEdges, vtkIdType numPatches);
 
