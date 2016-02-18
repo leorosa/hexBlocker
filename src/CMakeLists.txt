@@ -29,7 +29,7 @@ SET(HexBlockerSrcs
     main.cpp MainWindow.cpp HexBlock.cpp HexBlocker.cpp
     HexPatch.cpp InteractorStyleVertPick.cpp
     MoveVerticesWidget.cpp CreateBlockWidget.cpp
-    RotateVerticesWidget.cpp Geometry.cpp
+    RotateVerticesWidget.cpp Geometry.cpp SplitHexBlock.cpp
     HexBC.cpp ToolBoxWidget.cpp
     SetBCsWidget.cpp SetBCsItem.cpp HexExporter.cpp HexEdge.cpp
     HexReader.cpp EdgePropsWidget.cpp

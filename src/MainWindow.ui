@@ -166,6 +166,7 @@
    <addaction name="actionZoomOut"/>
    <addaction name="actionCreateHexBlock"/>
    <addaction name="actionExtrudePatch"/>
+   <addaction name="actionSplitHexBlocks"/>
    <addaction name="actionDeleteBlocks"/>
    <addaction name="separator"/>
    <addaction name="actionOpenMoveVerticesDialog"/>
@@ -444,6 +445,21 @@
     <bool>true</bool>
    </property>
   </action>
+
+  <action name="actionSplitHexBlocks">
+   <property name="icon">
+    <iconset>
+     <normalon>:/Icons/SplitHexBlock.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>split blocks</string>
+   </property>
+   <property name="toolTip">
+    <string>Split parallel HexBlocks</string>
+   </property>
+  </action>
+
   <action name="actionDeleteBlocks">
    <property name="icon">
     <iconset>

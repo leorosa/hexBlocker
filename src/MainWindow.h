@@ -89,6 +89,8 @@ public slots:
   void slotOpenCreateHexBlockDialog();
   void slotStartDeleteHexBlock();
   void slotDeleteHexBlock();
+  void slotStartSplitHexBlocks();
+  void slotSplitHexBlocks();
   void slotPrintHexBlocks();
   void slotStartExtrudePatch();
   void slotExtrudePatch();

@@ -135,6 +135,7 @@ MainWindow::MainWindow()
     connect(this->ui->actionSaveAs,SIGNAL(triggered()),this, SLOT(slotSaveAsBlockMeshDict()));
     connect(this->ui->actionMergePatch,SIGNAL(triggered()),this,SLOT(slotStartMergePatch()));
     connect(this->ui->actionDeleteBlocks,SIGNAL(triggered()),this,SLOT(slotStartDeleteHexBlock()));
+    connect(this->ui->actionSplitHexBlocks,SIGNAL(triggered()),this,SLOT(slotStartSplitHexBlocks()));
 
     connect(this->ui->actionBlockVisibility,SIGNAL(triggered()),
             this,SLOT(slotHexObjVisibility()));
@@ -212,6 +213,28 @@ void MainWindow::slotDeleteHexBlock()
     hexBlocker->removeHexBlocks(selIds);
     hexBlocker->showPatches();
     verticeEditor->updateVertices();
+    hexBlocker->render();
+}
+
+void MainWindow::slotStartSplitHexBlocks()
+{
+    ui->statusbar->showMessage(tr("Select an edge, middle button when finished"),5000);
+    hexBlocker->resetColors();
+    styleActorPick->setSelection(InteractorStyleActorPick::edge,
+                                 InteractorStyleActorPick::single);
+    renwin->GetInteractor()->SetInteractorStyle(styleActorPick);
+    connect(styleActorPick,SIGNAL(selectionDone()),
+            this,SLOT(slotSplitHexBlocks()));
+    hexBlocker->render();
+}
+
+void MainWindow::slotSplitHexBlocks()
+{
+    disconnect(styleActorPick,SIGNAL(selectionDone()),
+               this,SLOT(slotSplitHexBlocks()));
+    vtkIdType edgeId = styleActorPick->selectedIds->GetId(0);
+    hexBlocker->splitHexBlock(edgeId);
+    renwin->GetInteractor()->SetInteractorStyle(defStyle);
     hexBlocker->render();
 }
 

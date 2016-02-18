@@ -167,6 +167,12 @@ public:
     void removeHexBlocks(vtkIdList * toRems);
     void arbitraryTest();
 
+    //divides parallel hexblocks in two halves, at the middle of a selected edge
+    void splitHexBlock(vtkIdType edgeId);
+
+    //a tentative algorithm to reorder vertices before creating a HexBlock.
+    void orderVertices(vtkIdList *selectedVertices);
+
     //show/hide objects
     void showBlocks();
     void hideBlocks();
